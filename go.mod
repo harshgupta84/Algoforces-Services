@@ -1,6 +1,8 @@
 module algoforces
 
-go 1.25.5
+go 1.23.0
+
+toolchain go1.23.12
 
 require github.com/gin-gonic/gin v1.11.0
 
