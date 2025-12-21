@@ -10,7 +10,7 @@ import (
 // Default configuration values
 const (
 	defaultJWT_SECRET  = "dev-secret-key-change-in-production"
-	defaultDB_HOST     = "localhost"
+	defaultDB_HOST     = "host.docker.internal"
 	defaultDB_PORT     = "5432"
 	defaultDB_USER     = "postgres"
 	defaultDB_PASSWORD = "postgres"
