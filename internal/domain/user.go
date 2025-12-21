@@ -7,11 +7,11 @@ import (
 
 // Actual reponse returned to user initially
 type User struct {
-	Id        string    `json:"id"`
-	Email     string    `json:"username"`
-	Password  string    `json:"-"`
-	Role      string    `json:"role"`
-	CreatedAt time.Time `json:"created_at"`
+    Id        string    `json:"id" gorm:"primaryKey;type:uuid"`
+    Email     string    `json:"email" gorm:"uniqueIndex;not null"`  // Fix json tag
+    Password  string    `json:"-" gorm:"not null"`
+    Role      string    `json:"role" gorm:"default:user"`
+    CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime"`
 }
 
 // SignupRequest is what the frontend sends to register.

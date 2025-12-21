@@ -36,6 +36,7 @@ func (s *authService) Signup(ctx context.Context, req *domain.SignupRequest) (*d
 	}
 
 	newUser := &domain.User{
+		Id:        uuid.New().String(),
 		Email:     req.Email,
 		Password:  hashedPassword,
 		Role:      "user",

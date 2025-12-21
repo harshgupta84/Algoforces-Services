@@ -3,12 +3,12 @@ package utils
 import (
 	"errors"
 	"time"
-	"os"
+	"algoforces/internal/conf"
 	"github.com/golang-jwt/jwt/v5"
 )
 
 
-var jwtSecret = os.Getenv("JWT_SECRET")
+var jwtSecret = configuration.JWT_SECRET
 
 
 type JWTToken struct {
@@ -38,7 +38,7 @@ func GenerateToken(userId string, role string, email string) (string, error) {
 	return signedToken, nil
 }
 
-func validateToken(tokenString string) (*JWTToken, error) {
+func ValidateToken(tokenString string) (*JWTToken, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &JWTToken{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(jwtSecret), nil
 	})
