@@ -6,6 +6,8 @@ import (
 	"context"
 	"errors"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type authService struct {
@@ -19,14 +21,10 @@ func NewAuthService(userRepo domain.UserRepository) domain.UserUseCase {
 }
 
 func (s *authService) Signup(ctx context.Context, req *domain.SignupRequest) (*domain.AuthResponse, error) {
-	existingUser, err := s.userRepo.GetByEmail(ctx, req.Email)
-
-	if err != nil {
-		return nil, err
-	}
-
+	// Check if user already exists
+	existingUser, _ := s.userRepo.GetByEmail(ctx, req.Email) // Ignore error as it's expected when user doesn't exist
 	if existingUser != nil {
-		return nil, errors.New("user already exists")
+		return nil, errors.New("user with this email already exists")
 	}
 
 	hashedPassword, err := utils.HashPassword(req.Password)

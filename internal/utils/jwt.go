@@ -8,7 +8,7 @@ import (
 )
 
 
-var jwtSecret = configuration.JWT_SECRET
+var jwtSecret = conf.JWT_SECRET
 
 
 type JWTToken struct {
