@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"algoforces/internal/utils"
+	"errors"
 	"net/http"
 	"strings"
 
@@ -53,9 +54,12 @@ func AuthMiddleware() gin.HandlerFunc {
 }
 
 // GetUserID extracts user ID from context
-func GetUserID(c *gin.Context) string {
-	userID, _ := c.Get("user_id")
-	return userID.(string)
+func GetUserID(c *gin.Context) (string, error) {
+	userID, exists := c.Get("user_id")
+	if !exists {
+		return "", errors.New("user ID not found in context")
+	}
+	return userID.(string), nil
 }
 
 // GetUserEmail extracts user email from context

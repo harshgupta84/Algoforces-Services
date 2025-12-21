@@ -3,6 +3,7 @@ package main
 import (
 	"algoforces/internal/domain"
 	"algoforces/internal/handlers"
+	"algoforces/internal/middleware"
 	"algoforces/internal/repository/postgres"
 	"algoforces/internal/services"
 	"algoforces/pkg/database"
@@ -30,7 +31,7 @@ func main() {
 	userRepo := postgres.NewUserRepository(db.DB)
 	authService := services.NewAuthService(userRepo)
 	authHandler := handlers.NewAuthHandler(authService)
-
+	userHandler := handlers.NewUserHandler(authService)
 	// 3. Setup router
 	r := gin.Default()
 
@@ -39,10 +40,9 @@ func main() {
 	r.POST("/api/auth/signup", authHandler.Signup)
 	r.POST("/api/auth/login", authHandler.Login)
 
-	// Temporary GET routes for testing
-	r.GET("/test/signup", authHandler.Signup)
-	r.GET("/test/login", authHandler.Login)
-
+	// Protected routes
+	r.GET("/api/user/profile", middleware.AuthMiddleware(), userHandler.GetUserProfile)
+	r.PUT("/api/user/profile", middleware.AuthMiddleware(), userHandler.UpdateUserProfile)
 	// 5. Start the Server
 	fmt.Println("Starting Algoforces API on :8080...")
 	err = r.Run(":8080")
