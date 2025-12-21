@@ -3,7 +3,6 @@ package main
 import (
 	"algoforces/internal/domain"
 	"algoforces/internal/handlers"
-	"algoforces/internal/middleware"
 	"algoforces/internal/repository/postgres"
 	"algoforces/internal/services"
 	"algoforces/pkg/database"
@@ -21,6 +20,11 @@ func main() {
 	}
 	defer db.Close()
 
+	// Run migrations
+	err = db.AutoMigrate(&domain.User{})
+	if err != nil {
+		log.Fatal("Failed to migrate database:", err)
+	}
 
 	// 2. Initialize dependencies
 	userRepo := postgres.NewUserRepository(db.DB)
@@ -35,8 +39,14 @@ func main() {
 	r.POST("/api/auth/signup", authHandler.Signup)
 	r.POST("/api/auth/login", authHandler.Login)
 
+	// Temporary GET routes for testing
+	r.GET("/test/signup", authHandler.Signup)
+	r.GET("/test/login", authHandler.Login)
 
 	// 5. Start the Server
 	fmt.Println("Starting Algoforces API on :8080...")
-	r.Run(":8080")
+	err = r.Run(":8080")
+	if err != nil {
+		log.Fatal("Failed to start server:", err)
+	}
 }

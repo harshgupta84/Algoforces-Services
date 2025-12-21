@@ -1,11 +1,12 @@
 package database
 
 import (
+	"algoforces/internal/conf"
 	"fmt"
 	"log"
 	"os"
 	"time"
-	"algoforces/internal/conf"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -14,10 +15,18 @@ import (
 type Database struct {
 	*gorm.DB
 }
+type DatabaseConfig struct {
+	Host     string
+	Port     string
+	User     string
+	Password string
+	DBName   string
+	SSLMode  string
+}
 
 // NewPostgresConnection creates a new PostgreSQL database connection
 func NewPostgresConnection() (*Database, error) {
-	config := Config{
+	config := DatabaseConfig{
 		Host:     conf.DB_HOST,
 		Port:     conf.DB_PORT,
 		User:     conf.DB_USER,
@@ -71,7 +80,6 @@ func NewPostgresConnection() (*Database, error) {
 
 	return &Database{db}, nil
 }
-
 
 // Close closes the database connection
 func (d *Database) Close() error {

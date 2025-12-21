@@ -3,29 +3,30 @@
 package conf
 
 import (
+	"fmt"
 	"os"
 )
 
 // Default configuration values
 const (
-	defaultJWT_SECRET = "dev-secret-key-change-in-production"
-	defaultDB_HOST    = "localhost"
-	defaultDB_PORT    = "5432"
-	defaultDB_USER    = "postgres"
+	defaultJWT_SECRET  = "dev-secret-key-change-in-production"
+	defaultDB_HOST     = "localhost"
+	defaultDB_PORT     = "5432"
+	defaultDB_USER     = "postgres"
 	defaultDB_PASSWORD = "postgres"
-	defaultDB_NAME    = "algoforces"
-	defaultDB_SSLMODE = "disable"
+	defaultDB_NAME     = "algoforces"
+	defaultDB_SSLMODE  = "disable"
 )
 
 // Configuration variables with defaults and environment overrides
 var (
-	JWT_SECRET string
-	DB_HOST    string
-	DB_PORT    string
-	DB_USER    string
+	JWT_SECRET  string
+	DB_HOST     string
+	DB_PORT     string
+	DB_USER     string
 	DB_PASSWORD string
-	DB_NAME    string
-	DB_SSLMODE string
+	DB_NAME     string
+	DB_SSLMODE  string
 )
 
 // init function runs when the package is imported
@@ -38,6 +39,8 @@ func init() {
 	DB_PASSWORD = defaultDB_PASSWORD
 	DB_NAME = defaultDB_NAME
 	DB_SSLMODE = defaultDB_SSLMODE
+
+	fmt.Println("db host", DB_HOST)
 
 	// Override with environment variables if they exist
 	if envValue := os.Getenv("JWT_SECRET"); envValue != "" {

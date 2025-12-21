@@ -5,7 +5,6 @@ import (
 	"algoforces/internal/utils"
 	"context"
 	"errors"
-	"time"
 
 	"github.com/google/uuid"
 )
@@ -34,11 +33,10 @@ func (s *authService) Signup(ctx context.Context, req *domain.SignupRequest) (*d
 	}
 
 	newUser := &domain.User{
-		Id:        uuid.New().String(),
-		Email:     req.Email,
-		Password:  hashedPassword,
-		Role:      "user",
-		CreatedAt: time.Now(),
+		Id:       uuid.New().String(),
+		Email:    req.Email,
+		Password: hashedPassword,
+		Role:     "user",
 	}
 
 	err = s.userRepo.Create(ctx, newUser)
